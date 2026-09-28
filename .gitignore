@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# Secrets and credentials
+.env
+.env.*
+*.p8
+*.pem
+profiles.yml
+
+# dbt
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+logs/
+.user.yml
+
+# Generated and downloaded data (reproducible from scripts)
+data/
+reference/data/
+*.duckdb
+*.duckdb.wal
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
