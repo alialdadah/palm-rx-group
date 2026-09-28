@@ -1,0 +1,85 @@
+# Settings for generate.py. Change numbers here, not in the code.
+
+seed = 42
+start_date = 2025-10-01
+end_date = 2026-09-30
+
+[pricing]
+dispensing_fee = 8.83    # per fill, dollars
+injection_fee = 13.00    # per flu shot, dollars (the vaccine itself is publicly supplied)
+odb_markup = 0.08        # drug cost = quantity x ODB unit price x (1 + markup)
+
+[[stores]]
+id = "store_a"
+name = "Palm Rx Downtown"
+export_format = "a"      # clean CSV, DIN, units
+id_prefix = "A"          # patient A000001, prescriber ADR0001, invoice A-INV-000001
+city = "Toronto"
+postal_prefixes = ["M5A", "M5B", "M5C", "M5E", "M5G", "M5H", "M5J", "M5T", "M5V"]
+area_codes = ["416", "647", "437"]
+patients = 2000
+prescribers = 40
+
+[[stores]]
+id = "store_b"
+name = "Lakeview Pharmacy"
+export_format = "b"      # pipe-delimited, item codes, packs
+id_prefix = "LV"
+city = "Mississauga"
+postal_prefixes = ["L5E", "L5G", "L5H", "L5J", "L4Y"]
+area_codes = ["905", "289", "365"]
+patients = 2000
+prescribers = 40
+
+[patients]
+# share of patients in each age band, and how likely each band is to have chronic therapy
+age_bands = [
+  { min = 0, max = 17, share = 0.15, chronic = 0.05 },
+  { min = 18, max = 39, share = 0.25, chronic = 0.25 },
+  { min = 40, max = 64, share = 0.35, chronic = 0.65 },
+  { min = 65, max = 95, share = 0.25, chronic = 0.90 },
+]
+female_share = 0.51
+usual_prescriber_share = 0.80
+
+[chronic]
+therapies_per_patient = [0.50, 0.35, 0.15]   # odds of 1, 2, 3 therapies
+group_weights = { statin = 0.30, ras = 0.30, diabetes = 0.15, other_chronic = 0.25 }
+already_running_share = 0.70
+ninety_day_share = 0.30
+# odds for each next fill (averages; each patient's reliability shifts late/early/stop)
+on_time = 0.68
+late = 0.20
+early = 0.07
+switch = 0.02
+stop = 0.03
+on_time_extra_days = [0, 3]
+late_extra_days = [4, 30]
+early_days = [1, 7]
+new_rx_after_days = 365
+
+[acute]
+fills_per_patient_per_year = 1.5
+group_weights = { antibiotic = 0.75, opioid = 0.25 }
+days_supply = { antibiotic = [5, 7, 10, 14], opioid = [3, 5, 7] }
+
+[flu]
+share_under_65 = 0.30
+share_65_plus = 0.60
+season_start = 2025-10-01
+season_peak = 2025-10-25
+season_end = 2025-12-31
+
+[inventory]
+opening_days = 14          # opening stock covers this many days of expected demand
+reorder_below_days = 7     # order when closing stock drops below this many days
+order_up_to_days = 21
+late_delivery_share = 0.02
+adjustments_per_week = 1
+
+[purchasing]
+wholesaler = "Northfield Pharma Distribution"
+vaccine_supplier = "Ontario Universal Influenza Immunization Program"
+cost_factor = [0.90, 1.02]           # invoice unit cost = ODB price x this
+above_odb_share = 0.05               # share of invoice lines priced above the ODB price
+above_odb_factor = [1.05, 1.15]

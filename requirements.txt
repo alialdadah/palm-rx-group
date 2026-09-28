@@ -1,7 +1,8 @@
 # Python dependencies for the whole repo.
 # Setup: python -m venv .venv, activate it, then pip install -r requirements.txt
 # The reference download script uses only the standard library.
-# Add packages here as each phase needs them (Faker for the generator, dbt-snowflake, etc.).
+# Add packages here as each phase needs them (dbt-snowflake, the Snowflake connector, etc.).
 
+faker==40.39.0
 pre-commit==4.6.2
 pytest==9.1.1
