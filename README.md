@@ -76,6 +76,28 @@ Running the script afterwards adds these files to `manifest.json` without downlo
 
 `data_download/` is a local staging area only. From here the files are loaded into Snowflake's `RAW.reference` schema.
 
+## Synthetic store data
+
+All patient, prescriber and transaction data is generated. Nothing comes from a real pharmacy. The generator simulates one year (Oct 2025 to Sep 2026) for two stores that export in different formats:
+
+| | Store A: Palm Rx Downtown | Store B: Lakeview Pharmacy |
+| --- | --- | --- |
+| Format | CSV (`.csv`) | Pipe-delimited (`.txt`), upper-case names |
+| Drug identifier | DIN | Store's own item code (`LV-12345`) |
+| Quantities | Units | Packs (decimal) |
+
+Each store exports patients, prescribers, dispensing, daily inventory, inventory adjustments and wholesaler invoices, one file per feed per month. Store B also exports an item list without DINs.
+
+```bash
+pip install -r requirements.txt
+python generator/generate.py      # writes data/generated/store_a/ and store_b/ (git-ignored)
+```
+
+- The drugs are real: `generator/drug_catalog.csv` holds ~200 DINs with their ODB prices, picked by `python generator/build_drug_catalog.py` from the reference data.
+- Settings (dates, patient counts, refill odds, prices) live in `generator/config.toml`. The same seed always produces the same files.
+- Chronic patients refill on time, late or early, or stop, so adherence (PDC) varies. Stock is simulated day by day, so `opening + purchases − dispensed ± adjustments = closing` always balances.
+- `data/generated/store_b/_answer_key_item_to_din.csv` is the true item-code → DIN mapping, used to build the dbt crosswalk. It is not a store export.
+
 ## Status
 
 🚧 In progress — Phase 1 (setup and MVP).
