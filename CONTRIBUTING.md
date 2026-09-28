@@ -2,6 +2,17 @@
 
 How work gets done in this repo. The goal: every change is small, tested, reviewed and traceable.
 
+## Setup
+
+Install the pre-commit hooks once after cloning:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+They run on every commit: whitespace and line-ending fixes, YAML/JSON checks, large-file and private-key blocking, and a guard against committing directly to `main`.
+
 ## Workflow
 
 1. **Open an issue** describing the change.
