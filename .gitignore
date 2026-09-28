@@ -22,7 +22,6 @@ logs/
 
 # Generated and downloaded data (reproducible from scripts)
 data/
-reference/data/
 *.duckdb
 *.duckdb.wal
 
