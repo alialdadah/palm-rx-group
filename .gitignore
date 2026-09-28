@@ -31,3 +31,8 @@ reference/data/
 .idea/
 .DS_Store
 Thumbs.db
+
+#project plan files
+*.pdf
+PROJECT_PLAN.md
+AI_USE.md
